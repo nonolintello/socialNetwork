@@ -1,0 +1,63 @@
+/* styles.css */
+/* Ensure body takes full viewport height */
+html, body {
+    height: 100%;
+    margin: 0; /* Reset default margin */
+    padding: 0; /* Reset default padding */
+    background-image: url('background_image.jpg'); /* 添加背景图片样式 */
+    background-size: cover;
+    background-position: center;
+  }
+  
+  /* Sidebar styling */
+  .list-group {
+    background-color: #f0f0f0;
+    min-height: 100%; /* Full height */
+    padding: 20px;
+  }
+  
+  /* Main content styling */
+  /* Assuming you add a class "content" to your main content div */
+  .content {
+    padding: 20px;
+  }
+  
+  /* Post styling */
+  /* Assuming you add a class "post" to each post div */
+  .post {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 15px;
+  }
+  
+  /* Sticky footer */
+  /* Assuming you add a footer element with class "footer" */
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f0f0f0;
+    text-align: center;
+    padding: 10px 0;
+  }
+  
+  /* Custom width for the sidebar navigation items */
+  .list-group-item {
+    width: 100%; /* Full width */
+    padding: 10px 20px; /* Adjust the padding as needed */
+  }
+  
+  /* Style for the search bar container */
+  .search-bar-container {
+    margin-top: 20px; /* Add some space at the top */
+  }
+  
+  /* Style for the search input */
+  .search-input {
+    width: 100%; /* Width of the search bar */
+    font-style: italic; /* Italic font for placeholder */
+    color: #666; /* Gray color for the input text */
+  }
+  
