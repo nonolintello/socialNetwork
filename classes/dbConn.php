@@ -95,56 +95,6 @@ class dbConn
         return [$attempted, $successful, $error];
     }
 
-  
-
-    function GenerateHTML_forPostsPage($ownerID, $isMyBlog, $dbConn)
-    {
-        // Requête pour obtenir les 10 derniers posts du propriétaire
-        $query = "SELECT * FROM `post` WHERE `id_owner` = :ownerID ORDER BY `date` DESC LIMIT 10";
-        $stmt = $dbConn->db->prepare($query);
-        $stmt->bindParam(':ownerID', $ownerID, PDO::PARAM_INT); // Assurez-vous que l'ID est traité comme un entier
-        $stmt->execute();
-
-        if ($stmt->rowCount() > 0) {
-            // Afficher un bouton pour ajouter un nouveau post si c'est le propre blog de l'utilisateur
-            if ($isMyBlog) {
-                echo '
-                <form action="editPost.php" method="POST">
-                    <input type="hidden" name="newPost" value="1">
-                    <button type="submit">Ajouter un nouveau post!</button>
-                </form>';
-            }
-
-            // Afficher chaque post avec ses détails
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                // Utiliser les détails du post pour afficher
-                echo "<div>";
-                echo "<h2>Post ID: " . htmlspecialchars($row['id']) . "</h2>";
-                echo "<p>Contenu: " . htmlspecialchars($row['texte']) . "</p>";
-                echo "<p>Date: " . htmlspecialchars($row['date']) . "</p>";
-
-                // Afficher une image si elle existe
-                if (!empty($row['url_image'])) {
-                    //echo DIR.htmlspecialchars($row['url_image']);
-                    echo "<img src='." . htmlspecialchars($row['url_image']) . ".jpeg' alt='Post Image' />";
-                }
-
-                echo "</div>";
-            }
-        } else {
-            // Si aucun post n'est trouvé, afficher un message
-            echo '<p>Il n\'y a pas de post.</p>';
-
-            if ($isMyBlog) {
-                echo '
-                <form action="editPost.php" method="POST">
-                    <input type="hidden" name="newPost" value="1">
-                    <button type="submit">Ajouter un premier post!</button>
-                </form>';
-            }
-        }
-    }
-
     function disconnect()
     {
         $this->db = null;

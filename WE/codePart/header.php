@@ -3,7 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>YOUTBM</title>
-    <link rel="icon" type="image/ico" href= <?php echo "images/logo_utbm.ico"?> ;>
+
+    <link rel="icon" type="image/ico" href= "images/logo_utbm.ico"; >
 </head>
 <body> 
 
