@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="Style/loginForm.css">
 </head>
 <body> 
-
+   
     <div class="container-fluid">
         <div class="row">
             <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
@@ -16,13 +16,22 @@
                     <ul class="nav flex-column">
 
                         <?php
+                        $id = isset($_SESSION['id']) ? $_SESSION['id'] : 0;
                         echo '
-                        <li class="nav-item"><a href="' . DIR . '/discover.php" class="nav-link active">Découvrir</a></li>
-                        <li class="nav-item"><a href="' . DIR . '/myBlog.php" class="nav-link">Ma Page</a></li>
                         <li class="nav-item"><a href="' . DIR . '/index.php" class="nav-link">Accueil</a></li>
-                        <li class="nav-item"><a href="' . DIR . '/notifications.php" class="nav-link">Notifications</a></li>
-                        <li class="nav-item"><a href="' . DIR . '/post.php" class="nav-link">Post</a></li>
-                        ';
+                        <li class="nav-item"><a href="' . DIR . '/discover.php" class="nav-link active">Découvrir</a></li>
+                       ';
+                        if(isset($_SESSION['id'])){
+                            echo '
+                            <li class="nav-item"><a href="' . DIR . '/notifications.php" class="nav-link">Notifications</a></li>
+                            <li class="nav-item"><a href="' . DIR . '/blog.php?id='. urlencode($id). '" class="nav-link">Ma Page</a></li>
+                            <li class="nav-item">
+                                <form action="' . DIR . '/logout.php" method="post">
+                                    <button type="submit" class="nav-link">Se déconnecter</button>
+                                </form>
+                            </li>
+                            ';
+                        }
                         ?>
                     </ul>
                 </div>

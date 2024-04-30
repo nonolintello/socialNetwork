@@ -1,7 +1,7 @@
 <?php
 
 require_once(__ROOT__ . "/classes/loginStatus.php");
-
+require_once(__ROOT__ . "/classes/postStorage.php");
 
 class dbConn
 {
@@ -15,7 +15,7 @@ class dbConn
         $user = "root";
         $password = "";
 
-  
+
         $dsn = "mysql:host=$server;dbname=$database;charset=utf8mb4";
 
         try {
@@ -26,7 +26,6 @@ class dbConn
         }
 
         $this->loginStatus = new LoginStatus($this);
-       
     }
 
     function sanitize($input)
@@ -53,7 +52,7 @@ class dbConn
         ) {
             $attempted = true;
 
-            
+
             if ($_POST["password"] !== $_POST["confirm"]) {
                 $error = "Les mots de passe ne correspondent pas.";
             } else {
@@ -85,6 +84,13 @@ class dbConn
 
                     if ($stmt->execute()) {
                         $successful = true;
+                        $stmt = $this->db->prepare("SELECT id FROM user WHERE email = :email");
+                        $stmt->bindParam(':email', $email);
+                        $stmt->execute();        
+                        if ($stmt->rowCount() > 0) {
+                    
+                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                            $_SESSION['id'] = $row['id'];}
                     } else {
                         $error = "Échec de création de compte.";
                     }
@@ -95,9 +101,60 @@ class dbConn
         return [$attempted, $successful, $error];
     }
 
+    function GetBlogOwnerFromID($ID, $connectedGuyName) {
+        $query = "SELECT `nom` FROM `user` WHERE `id` = :ID";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':ID', $ID, PDO::PARAM_INT); 
+        $stmt->execute();
+        //echo "t1";
+        if ($stmt->rowCount() > 0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($row["nom"] === $connectedGuyName) {
+                return array($connectedGuyName, true); 
+            } else {
+                return array($row["nom"], false); 
+            }
+        } else {
+           // echo "invalid";
+            return array("Invalide", false);
+        }
+    }
+
+    function GenerateHTML_forPostsPage($ownerID, $ownerName, $isMyBlog)
+    {
+        $query = "SELECT * FROM `post` WHERE `id_owner` = :ownerID ORDER BY `date` DESC LIMIT 5";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':ownerID', $ownerID, PDO::PARAM_INT);
+        $stmt->execute();
+        if ($stmt->rowCount() > 0) {
+            if ($isMyBlog) {
+                echo '
+                <form action="post.php" method="POST">
+                    <input type="hidden" name="newPost" value="1">
+                    <button type="submit">Ajouter un nouveau post!</button>
+                </form>';
+            }
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $postOBJ = new postStorage($row);
+			    $postOBJ->DisplayToHTML($ownerName, $isMyBlog);
+            }
+        } else {
+            echo '<p>Il n\'y a pas de post sur cette page.</p>';
+
+            if ($isMyBlog) {
+                echo '
+                <form action="post.php" method="POST">
+                    <input type="hidden" name="newPost" value="1">
+                    <button type="submit">Ajouter un premier post!</button>
+                </form>';
+            }
+        }
+    }
+
+
     function disconnect()
     {
         $this->db = null;
     }
 }
-?>
