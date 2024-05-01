@@ -6,22 +6,30 @@ class ImgFileUploader
     private $dbConn;
     public $hasAdequateFile = false;
     public $errorText = "";
+    private $file;
 
-    function __construct(&$conn)
+    function __construct(&$conn, $avatarOrPost)
     {
         $this->dbConn = $conn;
+        if($avatarOrPost){
+           $file='avatar';
+        } else{
+            $file='postImage';
+        }
         $this->hasAdequateFile = $this->isBufferFileAdequate();
+
     }
 
     function isBufferFileAdequate()
     {
-        if (isset($_FILES['imageFile']) && $_FILES['imageFile']['size'] > 0) {
-            if ($_FILES['imageFile']['size'] > 5242880) {
+        if (isset($_FILES[$this->file])) {
+            if ($_FILES[$this->file]['size'] > 5242880) {
                 $this->errorText = "Fichier trop grand! Respectez la limite de 5 Mo.";
                 return false;
             }
 
-            $fileType = $_FILES['imageFile']['type'];
+            $fileType = $_FILES['avatar']['type'];
+            //echo  $fileType ;
             if ($fileType == "image/jpeg" || $fileType == "image/png") {
                 return true;
             }
@@ -29,7 +37,8 @@ class ImgFileUploader
             $this->errorText = "Type de fichier non accepté! JPG et PNG uniquement.";
             return false;
         }
-
+        //echo isset($_FILES[$this->file]);
+        echo (isset($_FILES[$this->file]) && $_FILES[$this->file]['size'] > 0);
         $this->errorText = "Aucun fichier ou taille de fichier à zéro.";
         return false;
     }
@@ -37,10 +46,10 @@ class ImgFileUploader
     function saveFileAsNew($postID)
     {
         if ($this->hasAdequateFile) {
-            $file = $_FILES['imageFile']['name'];
+            $file = $_FILES[$this->file]['name'];
             $path = pathinfo($file);
             $ext = isset($path['extension']) ? $path['extension'] : '';
-            $tempName = $_FILES['imageFile']['tmp_name'];
+            $tempName = $_FILES[$this->file]['tmp_name'];
             $newFilename = $this->dbConn->loginStatus->userID . "_" . date("mdyHis");
             $pathFilenameExt = $this->savePath . $newFilename . "." . $ext;
 
@@ -61,6 +70,27 @@ class ImgFileUploader
             echo $this->errorText;
         } else {
             $this->updateImageInPost($postID, "");
+        }
+    }
+    function saveFileAsNewAvatar()
+    {
+        if ($this->hasAdequateFile) {
+            $file = $_FILES['avatar']['name'];
+            $path = pathinfo($file);
+            $ext = isset($path['extension']) ? $path['extension'] : '';
+            $tempName = $_FILES['avatar']['tmp_name'];
+            $newFilename = "avatar_" . date("mdyHis");
+            $pathFilenameExt = $this->savePath . $newFilename . "." . $ext;
+
+            if (file_exists($pathFilenameExt)) {
+                $this->errorText = "Erreur, le fichier d'avatar existe déjà.";
+                return '';
+            }
+
+            move_uploaded_file($tempName, $pathFilenameExt);
+            return $pathFilenameExt;
+        } else {
+            return '';
         }
     }
 
@@ -105,8 +135,8 @@ class ImgFileUploader
 
     function generateThumbnail($imageName, $extension)
     {
-        if (isset($_FILES['imageFile']['tmp_name'])) {
-            $fileName = $_FILES['imageFile']['tmp_name'];
+        if (isset($_FILES[$this->file]['tmp_name'])) {
+            $fileName = $_FILES[$this->file]['tmp_name'];
             if (file_exists($fileName)) {
                 list($width, $height) = getimagesize($fileName);
                 $goalWidth = 200;
@@ -128,5 +158,3 @@ class ImgFileUploader
         }
     }
 }
-
-?>

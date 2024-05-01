@@ -1,25 +1,30 @@
 <?php
 include("./ini.php");
-include(__ROOT__. "/codePart/header.php"); 
+include(__ROOT__ . "/codePart/header.php");
 
 if (isset($_GET["id"])) {
     $blogOwner = $dbConn->GetBlogOwnerFromID($_GET["id"], $dbConn->loginStatus->userName);
-    $blogOwnerName = $blogOwner[0];
-    $isMyOwnBlog = $blogOwner[1];
+    $blogOwnerName = htmlspecialchars($blogOwner[0]);
+    $avatarOwner = $blogOwner[1];
+    $isMyOwnBlog = $blogOwner[2];
 
-    
+    echo '<div class="container mt-4">';
+
     if ($blogOwnerName != "") {
         if ($isMyOwnBlog) {
-            echo "<h1>  Votre blog : " . htmlspecialchars($blogOwnerName) . " </h1>";
+            echo '<h1 class="blog-owner-title">Votre blog : ' . $blogOwnerName . '</h1>';
         } else {
-            echo "<h1>Blog de : " . htmlspecialchars($blogOwnerName) . "</h1>";
+            echo '<h1 class="blog-owner-title">Blog de  ' . $blogOwnerName . '</h1>';
         }
-        //echo is_object($dbConn->db);
-        $dbConn->GenerateHTML_forPostsPage($_GET["id"], $blogOwnerName, $isMyOwnBlog);
+
+        $dbConn->GenerateHTML_forPostsPage($_GET["id"], $blogOwnerName, $avatarOwner, $isMyOwnBlog); 
     } else {
-        echo "<h1>error : Cet id ne correspond à aucun utilisateur dans la DB</h1>";
+        echo '<div class="alert alert-danger" role="alert">Cet ID ne correspond à aucun utilisateur dans la base de données.</div>';
     }
+
+    echo '</div>';
+} else {
+    echo '<div class="container mt-4"><div class="alert alert-warning" role="alert">Aucun ID fourni. Impossible de trouver le blog.</div></div>';
 }
 
-?>
-
+include(__ROOT__ . "/codePart/footer.php");

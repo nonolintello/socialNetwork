@@ -51,6 +51,7 @@ class LoginStatus
                     $this->userID = $row["id"];
                     $this->userName = $row["nom"];
                     $_SESSION['id'] = $this->userID;
+                    $_SESSION['avatar'] = $row["url_avatar"];
                     $this->userMail = $email;
                     $this->loginSuccessful = true;
                 } else {

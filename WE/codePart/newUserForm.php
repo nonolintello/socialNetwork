@@ -1,42 +1,54 @@
-<form action="./newUser.php" method="post">
-	
-    <div class="formbutton">Création d'un compte</div> 
-
-    <div>
+<form action="./newUser.php" method="post" enctype="multipart/form-data"> 
+    <div class="form-group">
         <label for="name">Nom :</label>
-        <input autofocus type="text" id="name" name="name" required>
+        <input type="text" id="name" name="name" class="form-control" required autofocus>
     </div>
-    <div>
+    <div class="form-group">
         <label for="firstname">Prénom :</label>
-        <input autofocus type="text" id="firstname" name="firstname" required>
+        <input type="text" id="firstname" name="firstname" class="form-control" required>
     </div>
-    <div>
+    
+    <div class="form-group">
         <label for="email">Email :</label>
-        <input autofocus type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email" class="form-control" required>
     </div>
-    <div>
+    
+    <div class="form-group">
         <label for="password">Mot de passe :</label>
-        <input type="password" id="password" name="password" required>
+        <input type="password" id="password" name="password" class="form-control" required>
     </div>
-    <div>
-        <label for="confirm">Confirmer mot de passe :</label>
-        <input type="password" id="confirm" name="confirm" required>
+    
+    <div class="form-group">
+        <label for="confirm">Confirmer le mot de passe :</label>
+        <input type="password" id="confirm" name="confirm" class="form-control" required>
     </div>
-    <div>
-        <label for="birth">Date de naissance</label>
-        <input autofocus type="date" id="birth" name="birth" required>
+    
+    <div class="form-group">
+        <label for="birth">Date de naissance :</label>
+        <input type="date" id="birth" name="birth" class="form-control" required>
     </div>
-    <div>
+    
+    <div class="form-group">
         <label for="adresse">Adresse :</label>
-        <input type="text" id="adresse" name="adresse" required><br>
-
-        <label for="codepostal">Code postal :</label>
-        <input type="text" id="codepostal" name="codepostal" required><br>
-
-        <label for="commune">Commune :</label>
-        <input type="text" id="commune" name="commune" required><br>
+        <input type="text" id="adresse" name="adresse" class="form-control" required>
     </div>
-    <div class="formbutton">
-        <button type="submit">Créer le compte</button>
+    
+    <div class="form-group">
+        <label for="codepostal">Code postal :</label>
+        <input type="text" id="codepostal" name="codepostal" class="form-control" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="commune">Commune :</label>
+        <input type="text" id="commune" name="commune" class="form-control" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="avatar">Avatar :</label>
+        <input type="file" id="avatar" name="avatar" class="form-control">
+    </div>
+    
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-primary">Créer le compte</button>
     </div>
 </form>

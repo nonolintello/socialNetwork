@@ -1,7 +1,7 @@
 <?php
 include("./ini.php");
 
-include(__ROOT__ . "/classes/imageUpload.php");
+require_once(__ROOT__ . "/classes/imageUpload.php");
 
 if (isset($_POST["action"])) {
     if ($_POST["action"] == "edit") {
@@ -18,9 +18,9 @@ if (isset($_POST["action"])) {
             $stmt->execute();
 
 
-            $img = new ImgFileUploader($dbConn); // Crée une instance pour l'upload
-            echo $img->errorText;
-            echo "freeeeeerrre";
+            $img = new ImgFileUploader($dbConn,false); // Crée une instance pour l'upload
+           // echo $img->errorText;
+           
             $img->OverrideOldFile($postID); // Écrase l'image existante
         }
     } elseif ($_POST["action"] == "new") {
@@ -36,9 +36,9 @@ if (isset($_POST["action"])) {
             $stmt->execute();
 
             $lastInsertID = $dbConn->db->lastInsertId();
-            $img = new ImgFileUploader($dbConn); 
-            echo $img->errorText;
-            echo "freeeeeerrre";
+            $img = new ImgFileUploader($dbConn,false); 
+            //echo $img->errorText;
+    
             $img->SaveFileAsNew($lastInsertID); 
         }
     } elseif ($_POST["action"] == "delete") {
@@ -46,8 +46,8 @@ if (isset($_POST["action"])) {
             $postID = (int)$_POST["postID"];
 
             
-            $img = new ImgFileUploader($dbConn); // Instance pour la gestion des fichiers
-            $img->DeleteFile($postID); // Supprime l'image associée au post
+            $img = new ImgFileUploader($dbConn,false); 
+            $img->DeleteFile($postID); 
             
             $query = "DELETE FROM `post` WHERE `id` = :postID";
             $stmt = $dbConn->db->prepare($query);
