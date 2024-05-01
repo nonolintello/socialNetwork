@@ -3,8 +3,6 @@ include("./ini.php");
 
 include(__ROOT__ . "/classes/imageUpload.php");
 
-$dbConn = new dbConn();
-
 if (isset($_POST["action"])) {
     if ($_POST["action"] == "edit") {
         if (isset($_POST["title"]) && isset($_POST["content"]) && isset($_POST["postID"])) {
@@ -21,6 +19,8 @@ if (isset($_POST["action"])) {
 
 
             $img = new ImgFileUploader($dbConn); // Crée une instance pour l'upload
+            echo $img->errorText;
+            echo "freeeeeerrre";
             $img->OverrideOldFile($postID); // Écrase l'image existante
         }
     } elseif ($_POST["action"] == "new") {
@@ -35,9 +35,11 @@ if (isset($_POST["action"])) {
             $stmt->bindParam(':ownerID', $dbConn->loginStatus->userID, PDO::PARAM_INT);
             $stmt->execute();
 
-           
+            $lastInsertID = $dbConn->db->lastInsertId();
             $img = new ImgFileUploader($dbConn); 
-            $img->SaveFileAsNew($postID ); 
+            echo $img->errorText;
+            echo "freeeeeerrre";
+            $img->SaveFileAsNew($lastInsertID); 
         }
     } elseif ($_POST["action"] == "delete") {
         if (isset($_POST["postID"])) {

@@ -6,7 +6,7 @@ class postStorage
     private $titre;
     private $dateModif;
     private $contenu;
-    private $imgPath;
+    public $imgPath;
 
     function __construct($row)
     {
@@ -35,11 +35,11 @@ class postStorage
         }
 
         echo '<h3>•' . htmlspecialchars($this->titre) . '</h3>';
-        echo '<p>dernière modification le ' . date("d/m/y à h:i:s", $timestamp) . '</p></div>';
+        echo '<p>Dernière modification le ' . date("d/m/y à h:i:s", $timestamp) . '</p></div>';
 
         if (isset($this->imgPath) && $this->imgPath !== "") {
             $thumbPath = $this->GetThumbnailPath($this->imgPath);
-            echo '<img class="postImg" src="' . htmlspecialchars($thumbPath) . '">';
+            echo '<img class="postImg" src="./' . htmlspecialchars($thumbPath) . '">';
         }
 
         echo '<p class="postContent">' . htmlspecialchars($this->contenu) . '</p>';

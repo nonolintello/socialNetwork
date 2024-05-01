@@ -5,8 +5,8 @@ include(__ROOT__ . "/codePart/header.php");
 
 if (isset($_POST["newPost"]) && $_POST["newPost"] == 1) {
     ?>
-    <form action="./processPost.php" method="POST">
-        <div class="formbutton">Création d'un nouveau post</div>
+    <form enctype="multipart/form-data" action="./processPost.php" method="POST">
+        <div class="formbutton">Création d'un post</div>
         <div>
             <input type="hidden" name="action" value="new">
             <label for="title">Intitulé du post :</label>
@@ -16,6 +16,11 @@ if (isset($_POST["newPost"]) && $_POST["newPost"] == 1) {
             <label for="content">Message du post :</label>
             <textarea name="content" required> Votre post commence ici...</textarea>
         </div>
+        <div>
+        <input type="hidden" name="MAX_FILE_SIZE" value="5242880" />
+        <label for="imageFile">Image (facultative) :</label>
+        <input name="imageFile" type="file" />
+    </div>
         <div class="formbutton">
             <button type="submit">Ajouter ce post à mon blog</button>
         </div>
@@ -33,8 +38,8 @@ elseif (isset($_GET["postID"])) {
     if ($stmt->rowCount() > 0) {
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         ?>
-        <form action="./processPost.php" method="POST">
-            <div class="formbutton">Modification d'un post existant</div>
+        <form enctype="multipart/form-data" action="./processPost.php" method="POST">
+            <div class="formbutton">Modifier votre post</div>
             <div>
                 <input type="hidden" name="action" value="edit">
                 <input type="hidden" name="postID" value="<?php echo $data['id']; ?>">
@@ -44,6 +49,11 @@ elseif (isset($_GET["postID"])) {
             <div>
                 <label for="content">Message :</label>
                 <textarea name="content" required><?php echo htmlspecialchars($data['texte']); ?></textarea>
+            </div>
+            <div>
+            <input type="hidden" name="MAX_FILE_SIZE" value="5242880" />
+            <label for="imageFile">Image (facultative) :</label>
+            <input name="imageFile" type="file" />
             </div>
             <div class="formbutton">
                 <button type="submit">Modifier le post</button>

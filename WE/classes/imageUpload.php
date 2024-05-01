@@ -2,7 +2,7 @@
 
 class ImgFileUploader
 {
-    private $savePath = "Uploads/";
+    private $savePath = "images/postImages/";
     private $dbConn;
     public $hasAdequateFile = false;
     public $errorText = "";
@@ -15,13 +15,14 @@ class ImgFileUploader
 
     function isBufferFileAdequate()
     {
-        if ($_FILES['imageFile']['size'] > 0) {
+        if (isset($_FILES['imageFile']) && $_FILES['imageFile']['size'] > 0) {
             if ($_FILES['imageFile']['size'] > 5242880) {
-                $this->errorText = "Fichier trop grand! Respectez la limite de 5Mo.";
+                $this->errorText = "Fichier trop grand! Respectez la limite de 5 Mo.";
                 return false;
             }
 
-            if ($_FILES['imageFile']['type'] == "image/jpeg" || $_FILES['imageFile']['type'] == "image/png") {
+            $fileType = $_FILES['imageFile']['type'];
+            if ($fileType == "image/jpeg" || $fileType == "image/png") {
                 return true;
             }
 
@@ -38,10 +39,15 @@ class ImgFileUploader
         if ($this->hasAdequateFile) {
             $file = $_FILES['imageFile']['name'];
             $path = pathinfo($file);
-            $ext = $path['extension'];
+            $ext = isset($path['extension']) ? $path['extension'] : '';
             $tempName = $_FILES['imageFile']['tmp_name'];
             $newFilename = $this->dbConn->loginStatus->userID . "_" . date("mdyHis");
             $pathFilenameExt = $this->savePath . $newFilename . "." . $ext;
+
+            if ($ext === '' || !in_array(strtolower($ext), ['jpg', 'jpeg', 'png'])) {
+                $this->errorText = "Extension de fichier non valide.";
+                return;
+            }
 
             if (file_exists($pathFilenameExt)) {
                 $this->errorText = "Erreur, le fichier existe déjà.";
@@ -72,15 +78,18 @@ class ImgFileUploader
         $stmt->execute();
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            if (file_exists($row['url_image'])) {
+            if (isset($row['url_image']) && file_exists($row['url_image'])) {
                 unlink($row['url_image']);
             }
 
-            $pathFragments = pathinfo($row['url_image']);
-            $thumbPath = $pathFragments['dirname'] . "/" . $pathFragments['filename'] . "_thumb.png";
-
-            if (file_exists($thumbPath)) {
-                unlink($thumbPath);
+            if (isset($row['url_image'])) {
+                $pathFragments = pathinfo($row['url_image']);
+                if (isset($pathFragments['dirname']) && isset($pathFragments['filename'])) {
+                    $thumbPath = $pathFragments['dirname'] . "/" . $pathFragments['filename'] . "_thumb.png";
+                    if (file_exists($thumbPath)) {
+                        unlink($thumbPath);
+                    }
+                }
             }
         }
     }
@@ -96,19 +105,27 @@ class ImgFileUploader
 
     function generateThumbnail($imageName, $extension)
     {
-        $fileName = $_FILES['imageFile']['tmp_name'];
-        list($width, $height) = getimagesize($fileName);
-        $goalWidth = 200;
-        $ratio = $goalWidth / $width;
-        $newHeight = $height * $ratio;
+        if (isset($_FILES['imageFile']['tmp_name'])) {
+            $fileName = $_FILES['imageFile']['tmp_name'];
+            if (file_exists($fileName)) {
+                list($width, $height) = getimagesize($fileName);
+                $goalWidth = 200;
+                $ratio = $goalWidth / $width;
+                $newHeight = $height * $ratio;
 
-        $src = imagecreatefromstring(file_get_contents($fileName));
-        $dst = imagecreatetruecolor($goalWidth, $newHeight);
-        imagecopyresampled($dst, $src, 0, 0, 0, 0, $goalWidth, $newHeight, $width, $height);
-        imagepng($dst, $this->savePath . $imageName . "_thumb.png");
+                $src = imagecreatefromstring(file_get_contents($fileName));
+                $dst = imagecreatetruecolor($goalWidth, $newHeight);
+                imagecopyresampled($dst, $src, 0, 0, 0, 0, $goalWidth, $newHeight, $width, $height);
 
-        imagedestroy($src);
-        imagedestroy($dst);
+                $thumbPath = $this->savePath . $imageName . "_thumb.png";
+                imagepng($dst, $thumbPath);
+
+                imagedestroy($src);
+                imagedestroy($dst);
+            }
+        } else {
+            $this->errorText = "Fichier temporaire introuvable.";
+        }
     }
 }
 

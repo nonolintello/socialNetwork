@@ -132,7 +132,7 @@ class dbConn
                 echo '
                 <form action="post.php" method="POST">
                     <input type="hidden" name="newPost" value="1">
-                    <button type="submit">Ajouter un nouveau post!</button>
+                    <button type="submit">Ajoute un nouveau post </button>
                 </form>';
             }
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -140,13 +140,13 @@ class dbConn
 			    $postOBJ->DisplayToHTML($ownerName, $isMyBlog);
             }
         } else {
-            echo '<p>Il n\'y a pas de post sur cette page.</p>';
+            echo '<p>Il n\'y a pas encore de post sur cette page</p>';
 
             if ($isMyBlog) {
                 echo '
                 <form action="post.php" method="POST">
                     <input type="hidden" name="newPost" value="1">
-                    <button type="submit">Ajouter un premier post!</button>
+                    <button type="submit">Ajoute ton premier post </button>
                 </form>';
             }
         }
