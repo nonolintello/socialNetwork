@@ -11,7 +11,7 @@
 
 <body>
     <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top"> <!-- Navbar fixée en haut -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top"> 
             <a class="navbar-brand" href="<?php echo DIR; ?>/index.php">Accueil</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -19,27 +19,29 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    
+
                     <li class="nav-item"><a href="./newUser.php" class="nav-link">Nouveau compte</a></li>
-                   
+
                     <?php
                     $id = isset($_SESSION['id']) ? $_SESSION['id'] : 0;
                     $avatar = isset($_SESSION['avatar']) ? $_SESSION['avatar'] : null;
 
                     if (isset($_SESSION['id'])) {
                         echo '
-                    <li class="nav-item"><a href="' . DIR . '/notifications.php" class="nav-link">Notifications</a></li>
-                    <li class="nav-item">
-                    <li class="nav-item"><a href="./discover.php" class="nav-link">Découvrir</a></li>
-                        <form action="' . DIR . '/logout.php" method="post">
-                            <button type="submit" class="nav-link">Se déconnecter</button>
-                        </form>
-                    </li>
-                    ';
+                        <li class="nav-item"><a href="' . DIR . '/notifications.php" class="nav-link">Notifications</a></li>
+                        <li class="nav-item"><a href="./discover.php" class="nav-link">Découvrir</a></li>
+                        <li class="nav-item">
+                            <form action="' . DIR . '/logout.php" method="post">
+                                <input type="hidden" name="redirect_url" value="' . htmlspecialchars($_SERVER['REQUEST_URI']) . '"> 
+                                <button type="submit" class="nav-link">Se déconnecter</button>
+                            </form>
+                        </li>
+                        ';
                     }
+
                     ?>
                 </ul>
-                <form class="d-flex ms-auto" action="./search.php" method="get"> <!-- Champ de recherche -->
+                <form class="d-flex ms-auto" action="./search.php" method="get"> 
                     <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Rechercher">
                     <button class="btn btn-success" type="submit">Rechercher</button>
                 </form>

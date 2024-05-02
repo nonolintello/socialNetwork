@@ -12,8 +12,8 @@ $newUserStatus = $dbConn->handleAccountCreation();
 
             <?php
             if ($newUserStatus[1]) {
-                echo '<div class="alert alert-success">Nouveau compte créé avec succès. Redirection vers la page d\'accueil...</div>';
-                header("Refresh: 3; url=./index.php"); 
+                echo '<div class="alert alert-success">Nouveau compte créé avec succès. Redirection vers votre page '.  $dbConn->loginStatus->userName .'...</div>';
+                header("Refresh: 3; url=./blog.php?id=" . $dbConn->loginStatus->userID);
             } elseif ($newUserStatus[0]) {
                 echo '<div class="alert alert-danger">Erreur de création de compte : ' . htmlspecialchars($newUserStatus[2]) . '</div>';
             }

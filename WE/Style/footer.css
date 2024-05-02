@@ -19,13 +19,13 @@ body, html {
 }
 
 .blog-owner-title {
-  font-size: 2em; /* Augmente la taille de la police */
+  font-size: 2em; 
   font-weight: bold; /* Rend le texte plus audacieux */
   color: #343a40; /* Couleur foncée pour le texte */
   background-color: #f8f9fa; /* Fond clair pour le contraste */
   padding: 10px; /* Ajoute du rembourrage autour du texte */
   border: 1px solid #ced4da; /* Bordure pour le souligner */
-  border-radius: 5px; /* Coins arrondis pour un aspect plus doux */
-  text-align: center; /* Centre le texte */
-  margin-bottom: 20px; /* Ajoute de l'espace en dessous */
+  border-radius: 5px; 
+  text-align: center; 
+  margin-bottom: 20px; 
 }
