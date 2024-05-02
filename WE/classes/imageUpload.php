@@ -2,19 +2,21 @@
 
 class ImgFileUploader
 {
-    private $savePath = "images/postImages/";
+    private $savePath;
     private $dbConn;
     public $hasAdequateFile = false;
     public $errorText = "";
-    private $file;
+    private $file= '';
 
     function __construct(&$conn, $avatarOrPost)
     {
         $this->dbConn = $conn;
         if($avatarOrPost){
-           $file='avatar';
+           $this->file='avatar';
+           $this->savePath = "images/avatar/";
         } else{
-            $file='postImage';
+            $this->file='postImage';
+            $this->savePath = "images/postImages/";
         }
         $this->hasAdequateFile = $this->isBufferFileAdequate();
 
@@ -22,14 +24,13 @@ class ImgFileUploader
 
     function isBufferFileAdequate()
     {
-        if (isset($_FILES[$this->file])) {
+        if (isset($_FILES[$this->file])&& $_FILES[$this->file]['size'] > 0) {
             if ($_FILES[$this->file]['size'] > 5242880) {
                 $this->errorText = "Fichier trop grand! Respectez la limite de 5 Mo.";
                 return false;
             }
 
-            $fileType = $_FILES['avatar']['type'];
-            //echo  $fileType ;
+            $fileType = $_FILES[$this->file]['type'];
             if ($fileType == "image/jpeg" || $fileType == "image/png") {
                 return true;
             }
@@ -37,8 +38,6 @@ class ImgFileUploader
             $this->errorText = "Type de fichier non accepté! JPG et PNG uniquement.";
             return false;
         }
-        //echo isset($_FILES[$this->file]);
-        echo (isset($_FILES[$this->file]) && $_FILES[$this->file]['size'] > 0);
         $this->errorText = "Aucun fichier ou taille de fichier à zéro.";
         return false;
     }
@@ -86,7 +85,6 @@ class ImgFileUploader
                 $this->errorText = "Erreur, le fichier d'avatar existe déjà.";
                 return '';
             }
-
             move_uploaded_file($tempName, $pathFilenameExt);
             return $pathFilenameExt;
         } else {

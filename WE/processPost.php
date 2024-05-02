@@ -55,7 +55,6 @@ if (isset($_POST["action"])) {
             $stmt->execute();
         }
     }
-
     header("Location: ./blog.php?id=" . urlencode($dbConn->loginStatus->userID));
     exit();
 }

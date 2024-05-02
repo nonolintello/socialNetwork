@@ -29,7 +29,7 @@ class postStorage
     
     // Lien vers le profil avec l'avatar
     echo '<a href="' . DIR . '/blog.php?id=' . htmlspecialchars($ownerID) . '">';
-    echo '<img src="./images/avatar' . htmlspecialchars($avatarOwner) . '" alt="Avatar de ' . htmlspecialchars($ownerName) . '" class="rounded-circle" style="width: 50px; height: 50px;">';
+    echo '<img src="' . htmlspecialchars($avatarOwner) . '" alt="Avatar de ' . htmlspecialchars($ownerName) . '" class="rounded-circle" style="width: 50px; height: 50px;">';
     echo '</a>';
     
     // Si c'est mon blog, ajoute les boutons de modification

@@ -21,6 +21,7 @@
                 <ul class="navbar-nav me-auto">
                     
                     <li class="nav-item"><a href="./newUser.php" class="nav-link">Nouveau compte</a></li>
+                   
                     <?php
                     $id = isset($_SESSION['id']) ? $_SESSION['id'] : 0;
                     $avatar = isset($_SESSION['avatar']) ? $_SESSION['avatar'] : null;
@@ -29,6 +30,7 @@
                         echo '
                     <li class="nav-item"><a href="' . DIR . '/notifications.php" class="nav-link">Notifications</a></li>
                     <li class="nav-item">
+                    <li class="nav-item"><a href="./discover.php" class="nav-link">Découvrir</a></li>
                         <form action="' . DIR . '/logout.php" method="post">
                             <button type="submit" class="nav-link">Se déconnecter</button>
                         </form>
@@ -67,7 +69,7 @@
                 <?php
                 if ($avatar) {
                     echo '<a href="' . DIR . '/blog.php?id=' . urlencode($id) . '" class="nav-link">';
-                    echo '<img src="./images/avatar' . htmlspecialchars($avatar) . '" alt="Avatar" class="rounded-circle" style="width: 40px; height: 40px;">';
+                    echo '<img src="' . htmlspecialchars($avatar) . '" alt="Avatar" class="rounded-circle" style="width: 40px; height: 40px;">';
                     echo '</a>';
                 }
                 ?>
