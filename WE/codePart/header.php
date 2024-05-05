@@ -27,14 +27,26 @@
                     <li class="nav-item"><a href="./newUser.php" class="nav-link">Nouveau compte</a></li>
 
                     <?php
-                    $id = isset($_SESSION['id']) ? $_SESSION['id'] : 0;
-                    $avatar = isset($_SESSION['avatar']) ? $_SESSION['avatar'] : null;
-
-                    if (isset($_SESSION['id'])) {
-                        //yangran add the 'Ma profile' here
+                    //yangran add the 'Ma profile' here
+                        $id = isset($_SESSION['id']) ? $_SESSION['id'] : 0;
+                        $avatar = isset($_SESSION['avatar']) ? $_SESSION['avatar'] : null;
                         echo '
-                        <li class="nav-item"><a href="' . DIR . '/notifications.php" class="nav-link">Notifications</a></li>
-                        <li class="nav-item"><a href="./discover.php" class="nav-link">Découvrir</a></li>
+                        <li class="nav-item"><a href="' . DIR . '/notifications.php" class="nav-link">Notifications</a></li>';
+
+                        if (isset($_SESSION['id'])) {
+                            $userId = $_SESSION['id'];
+                            // 查询未读通知数量
+                            $stmt = $dbConn->db->prepare("SELECT COUNT(*) FROM notification WHERE id_owner = ? AND lecture = 0");
+                            $stmt->execute([$userId]);
+                            $unreadCount = $stmt->fetchColumn();
+                            // 显示未读通知计数的链接
+                            if ($unreadCount > 0) {
+                                echo ' <span class="badge bg-danger">' . $unreadCount . '</span>';
+                                }
+                                echo '</a></li>';
+                        echo'<li class="nav-item"><a href="./discover.php" class="nav-link">Découvrir</a></li>
+                        <li class="nav-item"><a href="./Suivis.php" class="nav-link">Suivis</a></li>
+                        <li class="nav-item"><a href="./timeline.php" class="nav-link">Timeline</a></li>
                         <li class="nav-item"><a href="./profile.php" class="nav-link">Ma profile</a></li>
                         <li class="nav-item">
                             <form action="' . DIR . '/logout.php" method="post">

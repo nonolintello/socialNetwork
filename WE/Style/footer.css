@@ -78,3 +78,63 @@ body, html {
   margin-top: 10px;
   margin-bottom: 20px;
 }
+
+.notification-link .notif-count {
+  background-color: red;
+  color: white;
+  padding: 3px 6px;
+  border-radius: 50%;
+  font-weight: bold;
+  margin-left: 5px;
+  position: relative;
+  top: -2px;
+}
+
+.posts {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.post {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 5px;
+  border-left: 5px solid #17a2b8; /* 引入边框颜色以区分 */
+}
+
+.post h3 {
+  color: #343a40;
+  font-size: 1.2rem;
+}
+
+.post p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.post small {
+  display: block;
+  font-size: 0.8rem;
+  margin-top: 10px;
+  color: #999;
+}
+
+#loadMore {
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#loadMore:hover {
+  background-color: #1391b8;
+}

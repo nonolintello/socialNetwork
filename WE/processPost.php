@@ -55,6 +55,31 @@ if (isset($_POST["action"])) {
             $stmt->execute();
         }
     }
+
+    //yangran add the notification function
+    //Once a new post is sent, notification is sent to followers
+    $postID = isset($_POST["postID"]) ? (int)$_POST["postID"] : null;
+    $title = isset($_POST["title"]) ? $dbConn->sanitize($_POST["title"]) : '';
+    $content = isset($_POST["content"]) ? $dbConn->sanitize($_POST["content"]) : '';
+    if ($_POST["action"] == "new" || $_POST["action"] == "edit") {
+        // Send notifications to followers
+        $followersStmt = $dbConn->db->prepare("SELECT id_follower FROM follow WHERE id_isfollow = :userId");
+        $followersStmt->bindParam(':userId', $dbConn->loginStatus->userID);
+        $followersStmt->execute();
+        $followers = $followersStmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($followers as $follower) {
+            $notifStmt = $dbConn->db->prepare("INSERT INTO notification (texte, id_owner, post_id, date, lecture) VALUES (?, ?, ?, NOW(), 0)");
+            $notifText = "A new post by someone you follow: {$title}";
+            $notifStmt->execute([$notifText, $follower['id_follower'], $postID]);
+            /*
+                $notifyText = "Votre nouveau post est maintenant en ligne!";
+                $insertNotification = $dbConn->db->prepare("INSERT INTO notification (texte, id_owner, post_id, date, lecture) VALUES (?, ?, ?, NOW(), 0)");
+                $insertNotification->execute([$notifyText, $userId, $lastInsertID]);
+            */
+        }
+    }
+
     header("Location: ./blog.php?id=" . urlencode($dbConn->loginStatus->userID));
     exit();
 }
