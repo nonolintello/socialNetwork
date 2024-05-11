@@ -1,0 +1,168 @@
+
+body, html {
+  padding-top: 60px;
+  padding-bottom: 30px;
+  height: 100%;
+}
+
+.content {
+  min-height: calc(100vh - 50px); /* Hauteur totale moins la hauteur du footer */
+}
+
+.footer {
+  height: 50px;
+  background-color: #343a40; /* Couleur sombre */
+  color: white; /* Texte blanc */
+  text-align: center;
+  padding: 10px 0;
+  position: relative;
+}
+
+.blog-owner-title {
+  font-size: 2em; 
+  font-weight: bold; /* Rend le texte plus audacieux */
+  color: #343a40; /* Couleur foncée pour le texte */
+  background-color: #f8f9fa; /* Fond clair pour le contraste */
+  padding: 10px; /* Ajoute du rembourrage autour du texte */
+  border: 1px solid #ced4da; /* Bordure pour le souligner */
+  border-radius: 5px; 
+  text-align: center; 
+  margin-bottom: 20px; 
+}
+
+.like-button {
+  color: gray; /* Non liké */
+}
+
+.like-button.liked {
+  color: red; /* Liké */
+}
+
+.unread {
+  font-weight: bold;
+  color: red;
+}
+
+.read {
+  font-weight: normal;
+  color: black;
+}
+
+.notification {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.button {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 5px;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #e8e8e8;
+}
+
+.notification {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #f9f9f9;
+}
+
+.notification.unread {
+  background: #e8f0fe;
+}
+
+/* 额外的视觉变化效果，例如增加动画 */
+.notification-link .notif-count {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+      transform: scale(1);
+      opacity: 1;
+  }
+
+  50% {
+      transform: scale(1.1);
+      opacity: 0.7;
+  }
+
+  100% {
+      transform: scale(1);
+      opacity: 1;
+  }
+}
+
+.reply {
+  margin-left: 40px; /* Indentation pour les réponses */
+  border-left: 2px solid #ccc; /* Bordure pour indiquer le lien */
+  padding-left: 10px; /* Espace entre la bordure et le texte */
+}
+
+.reply .card {
+  border: none; /* Réduire la complexité visuelle pour les réponses */
+}
+
+
+/*CSS for suivis.php*/
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 1px solid #ddd; /* 添加边框以增强视觉效果 */
+}
+
+.follow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.follow-item p {
+  margin: 0;
+  padding-right: 20px; /* 增加间距使布局更加舒适 */
+}
+
+.btn-info {
+  padding: 5px 10px; /* 调整按钮的内边距 */
+}
+
+.user-details {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 添加阴影 */
+}
+
+
+/*the suivis button in timeline*/
+.follow-dropdown {
+  display: none; /* 默认不显示 */
+  position: absolute;
+  background-color: #f9f9f9;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  z-index: 1;
+  width: 300px; /* 或根据需要调整宽度 */
+  border-radius: 5px;
+  padding: 10px;
+}
+
+#followButton:hover + .follow-dropdown {
+  display: block; /* 鼠标悬停时显示 */
+}
+
